@@ -1,0 +1,5 @@
+= jquery-query-map
+
+jQuery query condition mapper.
+
+
