@@ -2,4 +2,19 @@
 
 jQuery query condition mapper.
 
+== Synopsis
 
+Allows for the composition of arbirary complex queries using a list of fields, connective and conditional operators.
+
+  $(function ($) {
+    // Query map setup.
+    $('#query-map').query_map({ // or $.query_map.create($('#query-map'), {
+    connectives: ['all', 'any'],
+    comparisons: ['is', 'is not', 'is greater than', 'is less than'],
+    fields:      ['firstname', 'lastname', 'group', 'age', 'year'],
+    });
+  })
+
+==== See
+
+http://github.com/shanna/jquery-query-map/blob/master/demo/index.html
