@@ -1,0 +1,16 @@
+* { margin: 0; padding: 0; }
+
+/* query-map */
+  #query button[type="submit"] { margin-top: 10px; }
+  #query-map { width: 100%; }
+  #query-map li { list-style-type: none; }
+  #query-map .control { float: right; clear: right; }
+  #query-map .control button { width: 30px; margin-left: 5px; }
+  #query-map .comparison { clear: both; width: 100%; overflow: hidden; }
+  #query-map .connective { clear: both; }
+  #query-map .operands { margin-left: 20px; }
+  #query-map .comparison .expression { float: left; }
+  #query-map .comparison .expression > ol > li { float: left; margin-right: 10px; }
+  #query-map .field .selector { width: 80px; }
+  #query-map .field select { width: 80px; }
+

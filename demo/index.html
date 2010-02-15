@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>jquery-query-map</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+    <link href='query-map.css' rel='stylesheet' type='text/css' />
+    <script src='jquery-1.4.1.js' type='text/javascript'></script>
+    <script src='../jquery-query-map.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      // <![CDATA[
+       $(function ($) {
+          // Query map setup.
+          // Or $.query_map.create($('#query-map'), {});
+          $('#query-map').query_map({
+            connectives: ['all', 'any'],
+            comparisons: ['is', 'is not', 'is greater than', 'is less than'],
+            fields:      ['firstname', 'lastname', 'group', 'age', 'year'],
+
+            // Optional conditions json.
+            conditions: {all: [
+              {any: [
+                {field: 'firstname', comparison: 'is', value: 'fred'},
+                {field: 'firstname', comparison: 'is', value: 'wilma'}
+              ]},
+              {field: 'lastname', comparison: 'is', value: 'flintstone'},
+              {field: 'age', comparison: 'is greater than', value: 20}
+            ]}
+          });
+
+          // Query map serializer.
+          $('#serialize').click(function () {
+            // If you want a stringify use: http://json.org/json2.js
+            console.warn($.query_map.to_json($('#query-map')));
+          });
+        });
+      // ]]>
+    </script>
+    <div id="query-map"></div>
+    <button id='serialize'>serialize</button>
+  </body>
+</html>
