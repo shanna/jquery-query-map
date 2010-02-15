@@ -32,22 +32,19 @@
     options = $.extend({blank: blank, conditions: blank.connective}, options);
 
     return this.each(function () {
-      var builder = $(this);
-      var root    = $('<ol />').addClass('root');
-      root.append.apply(root, operator(options));
-      builder.append(root);
+      var root = $('<ol />', {'class': 'root'}).appendTo(this);
+      $(operator(options)).appendTo(root);
     });
 
-    // TODO: There is probably a better way of building this in jQuery?
-    function select(options) {
+    function select(options, value) {
       var select = $('<select />');
       $.each(options, function (i, option) {
-        select.append($('<option />').text(option));
+        select.append($('<option />', {text: option}));
       });
+      select.val(value);
       return select;
     }
 
-    // Connective or comparison.
     function operator (options) {
       var expression = connective(options);
       return expression.length > 0 ? expression : comparison(options);
@@ -56,51 +53,49 @@
     function connective (options) {
       return $.map(options.connectives, function (name) {
         if (!options.conditions[name]) return;
+        var op = $('<div />', {'class': 'operator'})
+          .append(select(options.connectives, name), ' of the following rules:');
 
-        var op = $('<div />')
-          .addClass('operator')
-          .append(select(options.connectives).val(name), ' of the following rules:');
-
-        var operands = $('<ol />').addClass('operands');
+        var operands = $('<ol />', {'class': 'operands'});
         $.each(options.conditions[name], function (i, condition) {
           operands.append.apply(operands, operator($.extend(options, {conditions: condition})));
         });
 
-        var expression = $('<div />').addClass('expression').append(op, operands);
-        return $('<li />').addClass('connective').append(control(options), expression);
+        var expression = $('<div />', {'class': 'expression'}).append(op, operands);
+        return $('<li />', {'class': 'connective'}).append(control(options), expression);
       });
     }
 
     function comparison (options) {
       var conditions = options.conditions || {};
-      var field      = $('<li />').addClass('field').append(select(options.fields).val(conditions.field));
-      var operator   = $('<li />').addClass('operator').append(select(options.comparisons).val(conditions.comparison));
-      var value      = $('<li />').addClass('value').append($('<input />').attr({type: 'text'}).val(conditions.value));
-      var expression = $('<div />').addClass('expression').append($('<ol />').append(field, operator, value));
-      return [$('<li />').addClass('comparison').append(control(options), expression)];
+      var field      = $('<li />', {'class': 'field'}).append(select(options.fields, conditions.field));
+      var operator   = $('<li />', {'class': 'operator'}).append(select(options.comparisons, conditions.comparison));
+      var value      = $('<li />', {'class': 'value'}).append($('<input />', {type: 'text', val: conditions.value}));
+      var expression = $('<div />', {'class': 'expression'}).append($('<ol />').append(field, operator, value));
+      return [$('<li />', {'class': 'comparison'}).append(control(options), expression)];
     }
 
     // TODO:
     // You can't remove the last condition in an connective.
     // You can't remove the root connective.
     function control (options) {
-      var add = $('<button />').attr({type: 'button'}).text('+').click(function () {
+      var add = $('<button />', {type: 'button', text: '+'}).click(function () {
         var comparison = operator($.extend(options, {conditions: options.blank.comparison}));
         var sibling    = $(this).closest('li');
         sibling.after.apply(sibling, comparison);
         return false;
       });
-      var del = $('<button />').attr({type: 'button'}).text('-').click(function () {
+      var del = $('<button />', {type: 'button', text: '-'}).click(function () {
         $(this).closest('li').remove();
         return false;
       });
-      var sub = $('<button />').attr({type: 'button'}).text('…').click(function () {
+      var sub = $('<button />', {type: 'button', text: '…'}).click(function () {
         var connective = operator($.extend(options, {conditions: options.blank.connective}));
         var sibling    = $(this).closest('li');
         sibling.after.apply(sibling, connective);
         return false;
       });
-      return $('<div />').addClass('control').append(add, del, sub);
+      return $('<div />', {'class': 'control'}).append(add, del, sub);
     }
   };
 
