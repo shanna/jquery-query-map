@@ -32,7 +32,7 @@
           // Query map serializer.
           $('#serialize').click(function () {
             // If you want a stringify use: http://json.org/json2.js
-            console.warn($.query_map.to_json($('#query-map')));
+            console.warn($.query_map.encode($('#query-map')));
           });
         });
       // ]]>

@@ -100,11 +100,11 @@
   };
 
   $.query_map = {
-    create: function (builder, options) {
+    parse: function (builder, options) {
       return builder.query_map(options);
     },
 
-    to_json: function (builder) {
+    encode: function (builder) {
       var conditions = {};
       var operands   = [];
       var connective = builder.is('.connective') ? builder : $(builder.find('.connective').get(0));
@@ -112,7 +112,7 @@
       connective.find('> .expression > ol > li').each(function () {
         var op = $(this);
         if (op.is('.connective')) {
-          operands.push($.query_map.to_json(op));
+          operands.push($.query_map.encode(op));
         }
         else if (op.is('.comparison')) {
           operands.push({
